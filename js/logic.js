@@ -13,13 +13,21 @@ startButton.addEventListener('click', function () {
     document.querySelector("#introP").style.display = "none";
     document.querySelector("#startTheQuiz").style.display = "none";
 
+
     startTheQuiz();
 
 });
 
 
+// main index var of the questions array to reference
+let i = 0;
+
+
+
 function startTheQuiz() {
-    let i = 0;
+
+    document.querySelector("#timerText").textContent = countdownTimer;
+
 
     let myInterval = setInterval(function () {
 
@@ -35,8 +43,8 @@ function startTheQuiz() {
             // stop the timer
             clearInterval(myInterval);
 
-            // end the game
-            gameOver();
+
+
         };
 
     }, 1000);
@@ -54,21 +62,11 @@ function startTheQuiz() {
 
     redrawBoxes();
 
-
-
-
-
-
-
-
-
     let buttonBox = document.querySelector("#answerBox");
     buttonBox.addEventListener("click", handleClick, true);
 
 
     let currentAnswer = "";
-
-
 
     function handleClick(event) {
 
@@ -76,19 +74,21 @@ function startTheQuiz() {
 
         event.stopImmediatePropagation();
 
-
         // the user can keep clicking answers until the right answer is selected.  if the wrong answer is selected, we remove 10 seconds from countdownTimer
 
 
         if (event.target.matches("#answer1Button")) {
 
             currentAnswer = "a";
+
         } else if (event.target.matches("#answer2Button")) {
 
             currentAnswer = "b";
+
         } else if (event.target.matches("#answer3Button")) {
 
             currentAnswer = "c";
+
         } else if (event.target.matches("#answer4Button")) {
 
             currentAnswer = "d";
@@ -111,6 +111,7 @@ function startTheQuiz() {
             } else {
                 redrawBoxes();
             };
+            
         } else {
             // wrong answer! deduct 10 points
             countdownTimer -= 10;
@@ -170,7 +171,11 @@ function gameOver() {
 
     let initialsSubmit = document.querySelector("#initialsSubmit");
 
-    initialsSubmit.addEventListener("click", function () {
+    initialsSubmit.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+
 
         // hide all of the HTML elements from the results page
 
@@ -182,25 +187,27 @@ function gameOver() {
         document.querySelector("#initialsSubmit").style.display = "none";
 
         // load any existing high scores from local storage as array
+        scoresArray = localStorage.getItem('highScores') ? JSON.parse(localStorage.getItem('highScores')) : [];
+
+        // grab the text entered from the intials input field
+        let initialsInput = document.querySelector("#initialsInput").value;
 
 
-        // save the score and intials to local storage in array
+        // turning the users initials and score into an array
+        newScore = [initialsInput, countdownTimer];
 
-        
+
+        // add that new score array to the existing scores array
+        scoresArray.push(newScore);
+
+
+        // white the new high score list to local storage
+        localStorage.setItem('highScores', JSON.stringify(scoresArray));
 
         // run the high scores function which will show all high scores, storted and give the user a chance to play again
-
+        scoresArray = [];
         showHighScores();
-
-
-
-
     });
-
-
-
-
-
 };
 
 
@@ -208,9 +215,66 @@ function showHighScores() {
 
     // pull any existing scores from the local storage and display them sorted by high score.  we'll use JSON.parse 
 
-    let highScoresFromMemory = JSON.parse(localStorage.getItem("highScores"));
 
-    console.log(highScoresFromMemory);
+    savedScores = JSON.parse(localStorage.getItem("highScores"));
+    console.log("value of saved scores at the beginning of showhighscores: " + savedScores);
+
+    document.querySelector("#scoreboardH1").style.display = "block";
+
+
+    // sort the array in numeric order by high score
+    savedScores.sort(function (a, b) {
+        return parseInt(b[1]) - parseInt(a[1]);
+    });
+
+    // ordered list will hold high scores
+    document.querySelector("#highScoreList").style.display = "block";
+
+    // iterate over sorted array 
+    for (let index = 0; index < savedScores.length; index++) {
+
+        // generate a new list item populated with initials and high scores in each iteration
+
+        let currentHighScore = document.createElement("li");
+
+        currentHighScore.textContent = "Initials: " + savedScores[index][0] + "  Score: " + savedScores[index][1];
+
+        currentHighScore.classList.add("remove");
+
+        highScoreList.appendChild(currentHighScore);
+    }
+
+
+
+
+
+    // display a 'play again' type button, if they click it, start the game over
+
+    let playAgainButton = document.querySelector("#playAgain");
+
+    playAgainButton.style.display = "block";
+    playAgainButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        playAgainButton.style.display = "none";
+        document.querySelector("#highScoreList").style.display = "none";
+        document.querySelector("#scoreboardH1").style.display = "none";
+
+
+
+        i = 0;
+        countdownTimer = 75;
+
+        // reload the window to start the game from scratch
+        location.reload();
+
+
+    })
+
+
+
+
+
 
 
 

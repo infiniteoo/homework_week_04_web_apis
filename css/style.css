@@ -29,3 +29,16 @@
 input{
     border: none;
 }
+
+#scoreboardH1{
+    display: none;
+}
+
+#highScoreList{
+    display: none;
+}
+
+#playAgain{
+    display: none;
+}
+
