@@ -1,0 +1,31 @@
+#questionDisplay {
+    display: none;
+}
+
+#answerBox {
+    display: none;
+}
+
+#reactionDisplay {
+    display: none;
+}
+
+#allDoneDisplay {
+    display: none;
+}
+
+#finalScoreDisplay {
+    display: none;
+}
+
+#initialsLabel {
+    display: none;
+}
+
+#initialsSubmit {
+    display: none;
+}
+
+input{
+    border: none;
+}
