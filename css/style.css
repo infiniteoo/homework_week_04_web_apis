@@ -50,6 +50,7 @@ hr {
 }
 
 #myProgress {
+    margin-top: 10px;
     width: 100%;
     background-color: grey;
     border-radius: 5px;
@@ -83,4 +84,22 @@ hr {
 
 #initialsSubmit {
     margin-top: 10px;
+}
+
+@media screen and (max-width: 400px) {
+    
+    h1 {
+       font-size: 65px;
+    }
+
+    h2 {
+        font-size: 45px;
+    }
+
+    .answerButton{
+        font-size: 25px;
+    }
+
+   
+    
 }

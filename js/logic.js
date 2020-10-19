@@ -206,8 +206,6 @@ function gameOver() {
 
         event.preventDefault();
 
-
-
         // hide all of the HTML elements from the results page
         letsHide(["#allDoneDisplay", "#finalScoreDisplay", "#initialsLabel", "#initialsInput", "#initialsSubmit"]);
 
@@ -239,8 +237,6 @@ function gameOver() {
 };
 
 
-
-
 function showHighScores() {
 
     // pull any existing scores from the local storage and display them sorted by high score.  we'll use JSON.parse 
@@ -267,7 +263,7 @@ function showHighScores() {
 
         let currentHighScore = document.createElement("li");
 
-        currentHighScore.textContent = "Initials: " + savedScores[index][0] + "  Score: " + savedScores[index][1];
+        currentHighScore.textContent = "Name: " + savedScores[index][0] + "  Score: " + savedScores[index][1];
 
         currentHighScore.classList.add("remove");
 
