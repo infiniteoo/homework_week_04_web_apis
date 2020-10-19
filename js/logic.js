@@ -13,9 +13,23 @@ startButton.addEventListener('click', function () {
     document.querySelector("#introH1").style.display = "none";
     document.querySelector("#introP").style.display = "none";
     document.querySelector("#startTheQuiz").style.display = "none";
+    document.querySelector("#viewHighScoresButton").style.display = "none";
 
 
     startTheQuiz();
+
+});
+
+let viewHighScores = document.querySelector("#viewHighScoresButton");
+
+viewHighScores.addEventListener("click", function () {
+
+    document.querySelector("#introH1").style.display = "none";
+    document.querySelector("#introP").style.display = "none";
+    document.querySelector("#startTheQuiz").style.display = "none";
+    viewHighScores.style.display = "none";
+    showHighScores();
+
 
 });
 
@@ -26,17 +40,41 @@ let i = 0;
 
 
 function startTheQuiz() {
-
+    
+    document.querySelector("#myProgress").style.display = "block";
     document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
+    document.querySelector("hr").style.display = 'none';
+    document.querySelector("#timerText").style.display = "block";
 
+    let x = 100;
+    var elem = document.getElementById("myBar");
+    var width = 100;
 
     let myInterval = setInterval(function () {
         countdownTimer--;
+
+
+
+
+
+        // updates the progress bar countdown every second that passes
+
+
+        width -= 1.33;
+        elem.style.width = width + "%";
+
+
+
+
+
+
+
+
         if (countdownTimer <= 0) {
             // stop the timer
             finalScore = countdownTimer;
             clearInterval(myInterval);
-            
+
             gameOver();
 
 
@@ -45,7 +83,7 @@ function startTheQuiz() {
 
         // for every second that passes, we'll remove a second from the 75 second countdown timer and update the timer display
 
-        
+
         document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
 
         // end the game if countdown timer = 0  or if we've run out of questions
@@ -101,9 +139,14 @@ function startTheQuiz() {
         };
 
         if (currentAnswer === myQs[i].correctAnswer) {
+            document.querySelector("#reactionDisplay").style.background = "#50BFE6";
 
             // display correct! below the questions
             document.querySelector("#reactionDisplay").textContent = "Correct!  Good job!"
+            window.setTimeout(function () {
+
+                document.querySelector("#reactionDisplay").textContent = ""
+            }, 2000)
 
             // change rightAnswer boolean to true to exit loop
 
@@ -125,15 +168,21 @@ function startTheQuiz() {
             countdownTimer -= 10;
             finalScore = countdownTimer;
             if (countdownTimer < 10) {
-                
+
                 countdownTimer = 0;
-                
+
                 gameOver();
             };
 
             // display incorrect below the questions
             document.querySelector("#reactionDisplay").textContent = "Incorrect.  Try Again."
+            document.querySelector("#reactionDisplay").style.background = "red";
+            window.setTimeout(function () {
 
+                document.querySelector("#reactionDisplay").textContent = ""
+                document.querySelector("#reactionDisplay").style.background = "#50BFE6";
+
+            }, 2000)
         };
     };
 
@@ -160,8 +209,9 @@ function startTheQuiz() {
 
 function gameOver() {
 
-    document.querySelector("a").style.display = "none";
+
     document.querySelector("#timerText").style.display = "none";
+    document.querySelector("#myProgress").style.display = "none";
 
     // results page: show score and allowplayer to enter initials to add to leaderboard
 
@@ -224,6 +274,8 @@ function gameOver() {
         showHighScores();
     });
 };
+
+
 
 
 function showHighScores() {

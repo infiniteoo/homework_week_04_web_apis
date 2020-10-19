@@ -1,7 +1,7 @@
 const myQs = [
 
 {
-    question: "What built-in Javascript method lets you convert a string into an integer?",
+    question: "What built-in JavaScript method lets you convert a string into an integer?",
     answers: {
         a: "Number.strToInt()",
         b: "Number.parseInt()",
