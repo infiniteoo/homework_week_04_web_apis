@@ -51,9 +51,8 @@ function startTheQuiz() {
     var width = 100;
 
     let myInterval = setInterval(function () {
+
         countdownTimer--;
-
-
 
         // updates the progress bar countdown every second that passes
         width -= 1.33;
@@ -61,7 +60,7 @@ function startTheQuiz() {
 
         if (countdownTimer <= 0) {
             // stop the timer & end the game
-            finalScore = countdownTimer;
+
             clearInterval(myInterval);
 
             gameOver();
@@ -145,11 +144,12 @@ function startTheQuiz() {
         } else {
             // wrong answer! deduct 10 points
             countdownTimer -= 10;
+            width -= 13.3;
             finalScore = countdownTimer;
-            if (countdownTimer < 10) {
 
-                countdownTimer = 0;
-
+            if (countdownTimer <= 0) {
+                clearInterval(myInterval);
+                               
                 gameOver();
             };
 
@@ -189,7 +189,9 @@ function gameOver() {
     if (countdownTimer < 0) {
         countdownTimer = 0;
     };
-
+    if (finalScore < 0) {
+        finalScore = 0;
+    }
 
     letsHide(["#timerText", "#myProgress", "#answerBox", "#questionDisplay", "#reactionDisplay"]);
 
