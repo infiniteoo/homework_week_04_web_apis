@@ -1,6 +1,7 @@
 
 // intialize the 75 second timer
 let countdownTimer = 75;
+let finalScore = 0;
 
 
 // need a start button that clears the intro screen
@@ -26,26 +27,31 @@ let i = 0;
 
 function startTheQuiz() {
 
-    document.querySelector("#timerText").textContent = countdownTimer;
+    document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
 
 
     let myInterval = setInterval(function () {
-
-        // for every second that passes, we'll remove a second from the 75 second countdown timer and update the timer display
-
         countdownTimer--;
-        document.querySelector("#timerText").textContent = countdownTimer;
-
-        // end the game if countdown timer = 0  or if we've run out of questions
-
-
-        if (countdownTimer <= 0 || i === myQs.length) {
+        if (countdownTimer <= 0) {
             // stop the timer
+            finalScore = countdownTimer;
             clearInterval(myInterval);
+            
+            gameOver();
 
 
 
         };
+
+        // for every second that passes, we'll remove a second from the 75 second countdown timer and update the timer display
+
+        
+        document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
+
+        // end the game if countdown timer = 0  or if we've run out of questions
+
+
+
 
     }, 1000);
 
@@ -104,6 +110,8 @@ function startTheQuiz() {
             i++;
 
             if (i === myQs.length) {
+                clearInterval(myInterval);
+                finalScore = countdownTimer;
 
                 // after final question, show results page
                 gameOver();
@@ -111,13 +119,15 @@ function startTheQuiz() {
             } else {
                 redrawBoxes();
             };
-            
+
         } else {
             // wrong answer! deduct 10 points
             countdownTimer -= 10;
+            finalScore = countdownTimer;
             if (countdownTimer < 10) {
-
+                
                 countdownTimer = 0;
+                
                 gameOver();
             };
 
@@ -150,11 +160,16 @@ function startTheQuiz() {
 
 function gameOver() {
 
+    document.querySelector("a").style.display = "none";
+    document.querySelector("#timerText").style.display = "none";
+
     // results page: show score and allowplayer to enter initials to add to leaderboard
 
     if (countdownTimer < 0) {
         countdownTimer = 0;
     };
+
+
 
     document.querySelector("#answerBox").style.display = "none";
     document.querySelector("#questionDisplay").style.display = "none";
@@ -163,7 +178,7 @@ function gameOver() {
 
     document.querySelector("#allDoneDisplay").style.display = "block";
     document.querySelector("#finalScoreDisplay").style.display = "block";
-    document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + countdownTimer;
+    document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + finalScore;
     document.querySelector("#initialsLabel").style.display = "block";
     document.querySelector("#initialsInput").style.display = "block";
     document.querySelector("#initialsSubmit").style.display = "block";
@@ -181,7 +196,7 @@ function gameOver() {
 
         document.querySelector("#allDoneDisplay").style.display = "none";
         document.querySelector("#finalScoreDisplay").style.display = "none";
-        document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + countdownTimer;
+        document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + finalScore;
         document.querySelector("#initialsLabel").style.display = "none";
         document.querySelector("#initialsInput").style.display = "none";
         document.querySelector("#initialsSubmit").style.display = "none";
@@ -194,7 +209,7 @@ function gameOver() {
 
 
         // turning the users initials and score into an array
-        newScore = [initialsInput, countdownTimer];
+        newScore = [initialsInput, finalScore];
 
 
         // add that new score array to the existing scores array
@@ -217,7 +232,7 @@ function showHighScores() {
 
 
     savedScores = JSON.parse(localStorage.getItem("highScores"));
-    console.log("value of saved scores at the beginning of showhighscores: " + savedScores);
+
 
     document.querySelector("#scoreboardH1").style.display = "block";
 
@@ -264,7 +279,7 @@ function showHighScores() {
 
         i = 0;
         countdownTimer = 75;
-
+        finalScore = 0;
         // reload the window to start the game from scratch
         location.reload();
 

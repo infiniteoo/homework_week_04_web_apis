@@ -1,44 +1,42 @@
-#questionDisplay {
+#questionDisplay, #answerBox, #reactionDisplay, #allDoneDisplay, #finalScoreDisplay, #initialsLabel, #initialsSubmit, #initialsInput, #scoreboardH1, #highScoreList, #playAgain {
     display: none;
 }
 
-#answerBox {
-    display: none;
-}
-
-#reactionDisplay {
-    display: none;
-}
-
-#allDoneDisplay {
-    display: none;
-}
-
-#finalScoreDisplay {
-    display: none;
-}
-
-#initialsLabel {
-    display: none;
-}
-
-#initialsSubmit {
-    display: none;
-}
-
-input{
+input {
     border: none;
 }
 
-#scoreboardH1{
-    display: none;
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Krona One', sans-serif;
+    font-size: 45px;
 }
 
-#highScoreList{
-    display: none;
+li:hover {
+    background-color: 	#50BFE6;
+    color: white;
 }
 
-#playAgain{
-    display: none;
+h1 {
+    font-size: 95px;
 }
 
+h2 {
+    font-size: 65px;
+}
+
+button {
+    background-color: #FDFF00;
+    border-radius: 10px;
+}
+
+#timerText {
+    float: right;
+}
+
+li:hover:before{
+
+    background-color: #87FF2A;
+    color: black;
+}
