@@ -1,4 +1,10 @@
 
+
+
+
+
+
+
 // intialize the 75 second timer
 let countdownTimer = 75;
 let finalScore = 0;
@@ -8,13 +14,10 @@ let finalScore = 0;
 // and starts the timer.
 let startButton = document.querySelector("#startTheQuiz");
 
+
 startButton.addEventListener('click', function () {
 
-    document.querySelector("#introH1").style.display = "none";
-    document.querySelector("#introP").style.display = "none";
-    document.querySelector("#startTheQuiz").style.display = "none";
-    document.querySelector("#viewHighScoresButton").style.display = "none";
-
+    letsHide(['#introH1', '#introP', '#startTheQuiz', '#viewHighScoresButton']);
 
     startTheQuiz();
 
@@ -24,10 +27,7 @@ let viewHighScores = document.querySelector("#viewHighScoresButton");
 
 viewHighScores.addEventListener("click", function () {
 
-    document.querySelector("#introH1").style.display = "none";
-    document.querySelector("#introP").style.display = "none";
-    document.querySelector("#startTheQuiz").style.display = "none";
-    viewHighScores.style.display = "none";
+    letsHide(['#introH1', '#introP', '#startTheQuiz', '#viewHighScoresButton']);
     showHighScores();
 
 
@@ -40,13 +40,13 @@ let i = 0;
 
 
 function startTheQuiz() {
-    
-    document.querySelector("#myProgress").style.display = "block";
-    document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
-    document.querySelector("hr").style.display = 'none';
-    document.querySelector("#timerText").style.display = "block";
 
-    let x = 100;
+    letsHide(['hr']);
+    letsShow(['#myProgress', '#timerText']);
+
+    document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
+
+
     var elem = document.getElementById("myBar");
     var width = 100;
 
@@ -55,29 +55,16 @@ function startTheQuiz() {
 
 
 
-
-
         // updates the progress bar countdown every second that passes
-
-
         width -= 1.33;
         elem.style.width = width + "%";
 
-
-
-
-
-
-
-
         if (countdownTimer <= 0) {
-            // stop the timer
+            // stop the timer & end the game
             finalScore = countdownTimer;
             clearInterval(myInterval);
 
             gameOver();
-
-
 
         };
 
@@ -86,21 +73,10 @@ function startTheQuiz() {
 
         document.querySelector("#timerText").textContent = "Time: " + countdownTimer;
 
-        // end the game if countdown timer = 0  or if we've run out of questions
-
-
-
-
     }, 1000);
 
     // show the question/answer button elements
-    document.querySelector("#answerBox").style.display = "block";
-    document.querySelector("#questionDisplay").style.display = "block";
-    document.querySelector("#reactionDisplay").style.display = "block";
-
-
-
-
+    letsShow(["#answerBox", "#questionDisplay", "#reactionDisplay"])
 
     // show the question/answers in current index
 
@@ -139,12 +115,15 @@ function startTheQuiz() {
         };
 
         if (currentAnswer === myQs[i].correctAnswer) {
+
             document.querySelector("#reactionDisplay").style.background = "#50BFE6";
 
             // display correct! below the questions
             document.querySelector("#reactionDisplay").textContent = "Correct!  Good job!"
-            window.setTimeout(function () {
 
+            // only show reaction pop up for two seconds 
+
+            window.setTimeout(function () {
                 document.querySelector("#reactionDisplay").textContent = ""
             }, 2000)
 
@@ -187,10 +166,6 @@ function startTheQuiz() {
     };
 
 
-
-
-
-
     function redrawBoxes() {
         document.querySelector("#questionDisplay").textContent = myQs[i].question;
 
@@ -206,32 +181,23 @@ function startTheQuiz() {
 
 };
 
+// results page: show score and allowplayer to enter initials to add to leaderboard
 
 function gameOver() {
 
-
-    document.querySelector("#timerText").style.display = "none";
-    document.querySelector("#myProgress").style.display = "none";
-
-    // results page: show score and allowplayer to enter initials to add to leaderboard
 
     if (countdownTimer < 0) {
         countdownTimer = 0;
     };
 
 
+    letsHide(["#timerText", "#myProgress", "#answerBox", "#questionDisplay", "#reactionDisplay"]);
 
-    document.querySelector("#answerBox").style.display = "none";
-    document.querySelector("#questionDisplay").style.display = "none";
-    document.querySelector("#reactionDisplay").style.display = "none";
+    letsShow(["#allDoneDisplay", "#finalScoreDisplay", "#initialsLabel", "#initialsInput", "#initialsSubmit"]);
 
 
-    document.querySelector("#allDoneDisplay").style.display = "block";
-    document.querySelector("#finalScoreDisplay").style.display = "block";
     document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + finalScore;
-    document.querySelector("#initialsLabel").style.display = "block";
-    document.querySelector("#initialsInput").style.display = "block";
-    document.querySelector("#initialsSubmit").style.display = "block";
+
     document.querySelector("input").style.border = "1px solid black";
 
     let initialsSubmit = document.querySelector("#initialsSubmit");
@@ -243,13 +209,10 @@ function gameOver() {
 
 
         // hide all of the HTML elements from the results page
+        letsHide(["#allDoneDisplay", "#finalScoreDisplay", "#initialsLabel", "#initialsInput", "#initialsSubmit"]);
 
-        document.querySelector("#allDoneDisplay").style.display = "none";
-        document.querySelector("#finalScoreDisplay").style.display = "none";
+
         document.querySelector("#finalScoreDisplay").textContent = "Your final score was: " + finalScore;
-        document.querySelector("#initialsLabel").style.display = "none";
-        document.querySelector("#initialsInput").style.display = "none";
-        document.querySelector("#initialsSubmit").style.display = "none";
 
         // load any existing high scores from local storage as array
         scoresArray = localStorage.getItem('highScores') ? JSON.parse(localStorage.getItem('highScores')) : [];
@@ -311,10 +274,6 @@ function showHighScores() {
         highScoreList.appendChild(currentHighScore);
     }
 
-
-
-
-
     // display a 'play again' type button, if they click it, start the game over
 
     let playAgainButton = document.querySelector("#playAgain");
@@ -323,30 +282,43 @@ function showHighScores() {
     playAgainButton.addEventListener("click", function (event) {
         event.preventDefault();
 
-        playAgainButton.style.display = "none";
-        document.querySelector("#highScoreList").style.display = "none";
-        document.querySelector("#scoreboardH1").style.display = "none";
+        letsHide(["#highScoreList", "#scoreboardH1", "#playAgain"])
 
-
-
+        // reset all of the main variables 
         i = 0;
         countdownTimer = 75;
         finalScore = 0;
+
+
         // reload the window to start the game from scratch
         location.reload();
 
 
     })
 
-
-
-
-
-
-
-
-
 };
+
+// made these next two functions to help reduct querySelector spam in my code
+
+function letsHide(stuffToHide) {
+
+    for (let it = 0; it < stuffToHide.length; it++) {
+
+        document.querySelector(stuffToHide[it]).style.display = "none";
+
+    }
+
+}
+
+function letsShow(stuffToShow) {
+
+    for (let it = 0; it < stuffToShow.length; it++) {
+
+        document.querySelector(stuffToShow[it]).style.display = "block";
+
+    }
+
+}
 
 
 
