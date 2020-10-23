@@ -1,4 +1,4 @@
-#questionDisplay, #answerBox, #reactionDisplay, #allDoneDisplay, #finalScoreDisplay, #initialsLabel, #initialsSubmit, #initialsInput, #scoreboardH1, #highScoreList, #questionHR, #playAgain, #myProgress, #timerText {
+#questionDisplay, #answerBox, #reactionDisplay, #allDoneDisplay, #finalScoreDisplay, #initialsLabel, #initialsSubmit, #initialsInput, #scoreboardH1, #highScoreList, #questionHR, #playAgain, #myProgress, #timerText, #clearHighScores {
     display: none;
 }
 
@@ -99,7 +99,9 @@ hr {
     .answerButton{
         font-size: 25px;
     }
-
-   
     
 }
+
+
+
+

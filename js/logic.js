@@ -1,10 +1,4 @@
 
-
-
-
-
-
-
 // intialize the 75 second timer
 let countdownTimer = 75;
 let finalScore = 0;
@@ -15,7 +9,7 @@ let finalScore = 0;
 let startButton = document.querySelector("#startTheQuiz");
 
 
-startButton.addEventListener('click', function () {
+startButton.addEventListener('click', () => {
 
     letsHide(['#introH1', '#introP', '#startTheQuiz', '#viewHighScoresButton']);
 
@@ -25,9 +19,10 @@ startButton.addEventListener('click', function () {
 
 let viewHighScores = document.querySelector("#viewHighScoresButton");
 
-viewHighScores.addEventListener("click", function () {
+viewHighScores.addEventListener("click", () => {
 
     letsHide(['#introH1', '#introP', '#startTheQuiz', '#viewHighScoresButton']);
+
     showHighScores();
 
 
@@ -36,8 +31,6 @@ viewHighScores.addEventListener("click", function () {
 
 // main index var of the questions array to reference
 let i = 0;
-
-
 
 function startTheQuiz() {
 
@@ -50,7 +43,7 @@ function startTheQuiz() {
     var elem = document.getElementById("myBar");
     var width = 100;
 
-    let myInterval = setInterval(function () {
+    let myInterval = setInterval(() => {
 
         countdownTimer--;
 
@@ -62,7 +55,6 @@ function startTheQuiz() {
             // stop the timer & end the game
 
             clearInterval(myInterval);
-
             gameOver();
 
         };
@@ -122,7 +114,7 @@ function startTheQuiz() {
 
             // only show reaction pop up for two seconds 
 
-            window.setTimeout(function () {
+            window.setTimeout(() => {
                 document.querySelector("#reactionDisplay").textContent = ""
             }, 2000)
 
@@ -144,19 +136,24 @@ function startTheQuiz() {
         } else {
             // wrong answer! deduct 10 points
             countdownTimer -= 10;
+
+            // reduce the progress bar by 10 seconds worth of width
             width -= 13.3;
             finalScore = countdownTimer;
 
             if (countdownTimer <= 0) {
+
                 clearInterval(myInterval);
-                               
                 gameOver();
+
             };
 
             // display incorrect below the questions
             document.querySelector("#reactionDisplay").textContent = "Incorrect.  Try Again."
             document.querySelector("#reactionDisplay").style.background = "red";
-            window.setTimeout(function () {
+
+            // just display the reaction alert for a few secs
+            window.setTimeout(() => {
 
                 document.querySelector("#reactionDisplay").textContent = ""
                 document.querySelector("#reactionDisplay").style.background = "#50BFE6";
@@ -204,7 +201,7 @@ function gameOver() {
 
     let initialsSubmit = document.querySelector("#initialsSubmit");
 
-    initialsSubmit.addEventListener("click", function (event) {
+    initialsSubmit.addEventListener("click", (event) => {
 
         event.preventDefault();
 
@@ -229,7 +226,7 @@ function gameOver() {
         scoresArray.push(newScore);
 
 
-        // white the new high score list to local storage
+        // write the new high score list to local storage
         localStorage.setItem('highScores', JSON.stringify(scoresArray));
 
         // run the high scores function which will show all high scores, storted and give the user a chance to play again
@@ -243,20 +240,51 @@ function showHighScores() {
 
     // pull any existing scores from the local storage and display them sorted by high score.  we'll use JSON.parse 
 
+    displayHighScores();
 
-    savedScores = JSON.parse(localStorage.getItem("highScores"));
+    // display a 'play again' type button, if they click it, start the game over
+    let clearButton = document.querySelector("#clearHighScores");
 
 
-    document.querySelector("#scoreboardH1").style.display = "block";
+
+    clearButton.addEventListener("click", () => {
+
+        // clear savedScores array and write to localstorage
+        let savedScores = [];
+
+        localStorage.setItem('highScores', savedScores);
+
+        // remove all existing list items from the ol
+
+        document.querySelector("#highScoreList").innerHTML = '';
+
+
+        // run displayHighScores() again
+        displayHighScores();
+
+    });
+
+
+    let playAgainButton = document.querySelector("#playAgain");
+
+
+    playAgainButton.addEventListener("click", () => location.reload());
+
+
+};
+
+function displayHighScores() {
+
+    savedScores = localStorage.getItem('highScores') ? JSON.parse(localStorage.getItem('highScores')) : [];
+
+    letsShow(["#scoreboardH1", "#clearHighScores", "#playAgain", "#highScoreList"]);
+
 
 
     // sort the array in numeric order by high score
-    savedScores.sort(function (a, b) {
+    savedScores.sort((a, b) => {
         return parseInt(b[1]) - parseInt(a[1]);
     });
-
-    // ordered list will hold high scores
-    document.querySelector("#highScoreList").style.display = "block";
 
     // iterate over sorted array 
     for (let index = 0; index < savedScores.length; index++) {
@@ -267,36 +295,11 @@ function showHighScores() {
 
         currentHighScore.textContent = "Name: " + savedScores[index][0] + "  Score: " + savedScores[index][1];
 
-        currentHighScore.classList.add("remove");
-
         highScoreList.appendChild(currentHighScore);
     }
+}
 
-    // display a 'play again' type button, if they click it, start the game over
-
-    let playAgainButton = document.querySelector("#playAgain");
-
-    playAgainButton.style.display = "block";
-    playAgainButton.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        letsHide(["#highScoreList", "#scoreboardH1", "#playAgain"])
-
-        // reset all of the main variables 
-        i = 0;
-        countdownTimer = 75;
-        finalScore = 0;
-
-
-        // reload the window to start the game from scratch
-        location.reload();
-
-
-    })
-
-};
-
-// made these next two functions to help reduct querySelector spam in my code
+// made these next two functions to help reduce querySelector spam in my code
 
 function letsHide(stuffToHide) {
 
